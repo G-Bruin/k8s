@@ -21,14 +21,15 @@ fi
 if [ $1 == "load" ]
 	then
 
-	docker load -i kube-apiserver.tar  
-	docker load -i kube-controller.tar 
-	docker load -i kube-scheduler.tar  
-	docker load -i kube-proxy.tar      
-	docker load -i pause.tar           
-	docker load -i etcd.tar            
-	docker load -i coredns.tar    
+	docker load -i kube-apiserver.tar  && \
+	docker load -i kube-controller.tar && \
+	docker load -i kube-scheduler.tar && \
+	docker load -i kube-proxy.tar      && \
+	docker load -i etcd.tar    && \
+	docker load -i coredns.tar    && \
 	docker load -i flannel.tar
+    docker load -i pause.tar
+
 
 fi
 

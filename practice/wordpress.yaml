@@ -72,10 +72,10 @@ spec:
       labels:
         app: wordpress
     spec:
-#      initContainers:
-#        - name: init-db
-#          image: busybox
-#          command: ['sh', '-c', 'until nslookup mysql; do echo waiting for mysql service; sleep 2; done;']
+      initContainers:
+        - name: init-db
+          image: busybox
+          command: ['sh', '-c', 'until nslookup mysql.blog; do echo waiting for mysql service; sleep 2; done;']
       containers:
         - name: wordpress
           image: wordpress
@@ -93,13 +93,15 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 30 # 规定kubelet 在第一次执行 probe 之前要的等待30秒钟
+            timeoutSeconds: 2
+            periodSeconds: 5  # 规定 kubelet 要每隔5秒执行一次 liveness probe
           readinessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
           resources:
             limits:
               cpu: 200m
