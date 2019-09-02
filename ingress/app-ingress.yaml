@@ -6,6 +6,10 @@ metadata:
   labels:
     kubernetes.io/ingress.class: "nginx"
 spec:
+  tls:
+    - hosts:
+      - k8s.api
+      secretName: nginx-ingress-secret
   rules:
     # 定义域名
     - host: k8s.api
