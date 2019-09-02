@@ -23,6 +23,7 @@ docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/pause:$PAUSE_VER
 docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:$ETCD_VERSION
 docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:$DNS_VERSION
 docker pull jmgao1983/flannel:$FLANNEL_VERSION
+docker pull quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.25.1
 
 # 修改tag
 docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:$K8S_VERSION           k8s.gcr.io/kube-apiserver:$K8S_VERSION
