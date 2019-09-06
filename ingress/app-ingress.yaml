@@ -11,11 +11,26 @@ spec:
       - k8s.api
       secretName: nginx-ingress-secret
   rules:
-    # 定义域名
     - host: k8s.api
       http:
         paths:
-          # 不同path转发到不同端口
+          - path:
+            backend:
+              serviceName: frontend-service
+              servicePort: 80
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend-http
+  namespace: laravel-k8s
+spec:
+  rules:
+    - host: k8s.wp53.com
+      http:
+        paths:
           - path:
             backend:
               serviceName: frontend-service

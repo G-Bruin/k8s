@@ -1,0 +1,153 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: laravel-k8s
+  name: frontend-deployment
+  labels:
+    app: getway
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: app
+          image: registry.cn-hangzhou.aliyuncs.com/bruin-tech/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: frontendport
+      imagePullSecrets:
+        - name: jenkins-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: laravel-k8s
+  labels:
+    app: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - name: ftport
+      protocol: TCP
+      port: 80
+      targetPort: frontendport
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: laravel-k8s
+  name: user-backend-deployment
+  labels:
+    app: api-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: user-backend
+    spec:
+      containers:
+        - name: app
+          image: registry.cn-hangzhou.aliyuncs.com/bruin-tech/user-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: userbackendport
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            timeoutSeconds: 2
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+      imagePullSecrets:
+        - name: jenkins-registry
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-backend-service
+  namespace: laravel-k8s
+  labels:
+    app: backend-service
+spec:
+  selector:
+    app: user-backend
+  ports:
+    - port: 80
+      targetPort: userbackendport
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: db-backend
+  namespace: laravel-k8s
+  labels:
+    app: api-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: db-backend
+    spec:
+      containers:
+        - name: app
+          image: registry.cn-hangzhou.aliyuncs.com/bruin-tech/db-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: dbbackendport
+      imagePullSecrets:
+        - name: jenkins-registry
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-backend-service
+  namespace: laravel-k8s
+  labels:
+    app: backend-service
+spec:
+  selector:
+    app: db-backend
+  ports:
+    - port: 80
+      targetPort: dbbackendport
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend-http
+  namespace: laravel-k8s
+spec:
+  rules:
+    - host: k8s.wp53.cn
+      http:
+        paths:
+          - path:
+            backend:
+              serviceName: frontend-service
+              servicePort: 80
+
