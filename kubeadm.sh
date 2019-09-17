@@ -45,6 +45,7 @@ docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:$ETCD_VERSIO
 docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:$DNS_VERSION
 docker rmi jmgao1983/flannel:$FLANNEL_VERSION
 
+docker tag daocloud.io/yxl1992/swoft-file:master  registry.cn-hangzhou.aliyuncs.com/bruin-tech/swoft:latest
 
 ##### node
 #
