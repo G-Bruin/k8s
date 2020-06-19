@@ -1,7 +1,7 @@
 #####  linux 环境
 - 发行版 centos
 - 版本 7(x86_64-Minimal-1810)
-- [阿里云os下载地址](https://mirrors.aliyun.com/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso)
+- [阿里云os下载地址](https://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-2003.iso)
 - VirtualBox 安装虚拟机, cpu 设置核数大于2
 - 设置hosts
 ```
